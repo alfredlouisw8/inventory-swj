@@ -1,8 +1,8 @@
-import getConsolidators from '@/actions/consolidators/getConsolidators'
+import getConsolidators from '@/features/consolidators/actions/getConsolidators'
 import getLogs from '@/actions/logs/getLogs'
 import BackButton from '@/components/back-button'
-import AddConsolidatorDialog from '@/components/consolidators/add-consolidator-dialog'
-import { consolidatorColumns } from '@/components/consolidators/columns'
+import AddConsolidatorDialog from '@/features/consolidators/components/add-consolidator-dialog'
+import { consolidatorColumns } from '@/features/consolidators/components/columns'
 import { logsColumns } from '@/components/logs/columns'
 import { DataTable } from '@/components/ui/data-table'
 

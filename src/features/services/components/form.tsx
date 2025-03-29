@@ -26,10 +26,14 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '../ui/select'
+} from '../../../components/ui/select'
 import { ContainerSize, Good, Service, ServiceType } from '@prisma/client'
 import { serviceTypeText } from '@/utils/functions'
-import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '../../../components/ui/popover'
 import {
   Command,
   CommandEmpty,
@@ -39,21 +43,21 @@ import {
   CommandList,
 } from '@/components/ui/command'
 import { cn } from '@/lib/utils'
-import { Calendar } from '../ui/calendar'
-import NumberInput from '../ui/number-input'
-import { ServiceSchema } from '@/actions/services/schema'
-import { createService } from '@/actions/services/createService'
+import { Calendar } from '../../../components/ui/calendar'
+import NumberInput from '../../../components/ui/number-input'
+import { ServiceSchema } from '@/features/services/actions/schema'
+import { createService } from '@/features/services/actions/createService'
 import { ServiceWithGoods } from '@/utils/types'
-import { updateService } from '@/actions/services/updateService'
-import { deleteService } from '@/actions/services/deleteService'
+import { updateService } from '@/features/services/actions/updateService'
+import { deleteService } from '@/features/services/actions/deleteService'
 import { useRouter } from 'next/navigation'
 import { formatInTimeZone } from 'date-fns-tz'
 import { TIMEZONE } from '@/utils/const'
-import FormTextField from '../ui/forms/form-text-field'
-import FormSelect from '../ui/forms/form-select'
-import FormDatePicker from '../ui/forms/form-date-picker'
-import FormTextArea from '../ui/forms/form-text-area'
-import getGoods from '@/actions/goods/getGoods'
+import FormTextField from '../../../components/ui/forms/form-text-field'
+import FormSelect from '../../../components/ui/forms/form-select'
+import FormDatePicker from '../../../components/ui/forms/form-date-picker'
+import FormTextArea from '../../../components/ui/forms/form-text-area'
+import getGoods from '@/features/goods/actions/getGoods'
 
 type Props = {
   type: 'create' | 'update' | 'delete'

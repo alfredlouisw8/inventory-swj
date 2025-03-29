@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { exportServicesData } from '@/actions/services/exportServices'
+import { exportServicesData } from '@/features/services/actions/exportServices'
 
 export async function GET(req: NextRequest) {
   try {

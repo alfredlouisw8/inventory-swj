@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/dialog'
 import ServiceForm from './form'
 import { Service } from '@prisma/client'
-import getGoods from '@/actions/goods/getGoods'
+import getGoods from '@/features/goods/actions/getGoods'
 import { InvoiceWithServices, ServiceWithGoods } from '@/utils/types'
 
 type Props = {
