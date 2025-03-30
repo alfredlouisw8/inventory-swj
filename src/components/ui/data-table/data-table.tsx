@@ -19,18 +19,25 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   filterFields: FilterFieldType[]
-  fetchFunction: (options: {
-    pageIndex: number
-    pageSize: number
-    filters: FilterType[]
-    sorting?: SortingState
-  }) => Promise<{ data: TData[]; count: number }>
+  fetchFunction: (
+    options: {
+      pageIndex: number
+      pageSize: number
+      filters: FilterType[]
+      sorting?: SortingState
+    },
+    args?: any
+  ) => Promise<{ data: TData[]; count: number }>
+  defaultFilters?: FilterType[]
+  additionalArguments?: any
 }
 export function DataTable<TData, TValue>({
   columns,
   data,
   filterFields,
   fetchFunction,
+  defaultFilters,
+  additionalArguments,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [rowCount, setRowCount] = useState<number>(0)
@@ -40,23 +47,27 @@ export function DataTable<TData, TValue>({
     pageIndex: 0,
     pageSize: PER_PAGE,
   })
-  const [filters, setFilters] = useState<FilterType[]>([])
+  const [filters, setFilters] = useState<FilterType[]>(defaultFilters ?? [])
 
   const fetchData = useCallback(
     async (
       pageIndex: number,
       pageSize: number,
       filters: FilterType[],
-      sorting?: SortingState
+      sorting?: SortingState,
+      additionalArguments?: any
     ) => {
       setIsLoading(true)
       try {
-        const { data, count } = await fetchFunction({
-          pageIndex,
-          pageSize,
-          filters,
-          sorting,
-        })
+        const { data, count } = await fetchFunction(
+          {
+            pageIndex,
+            pageSize,
+            filters,
+            sorting,
+          },
+          additionalArguments
+        )
         setTableData(data)
         setRowCount(count)
       } catch (error) {
@@ -69,7 +80,7 @@ export function DataTable<TData, TValue>({
   )
 
   useEffect(() => {
-    fetchData(pageIndex, pageSize, filters, sorting)
+    fetchData(pageIndex, pageSize, filters, sorting, additionalArguments)
   }, [fetchData, pageIndex, pageSize, filters, data, sorting])
 
   /* eslint-disable  @typescript-eslint/no-explicit-any */
@@ -137,6 +148,7 @@ export function DataTable<TData, TValue>({
         <DataTableSearch
           onFiltersChange={handleFiltersChange}
           filterFields={filterFields}
+          defaultFilters={filters}
         />
       </div>
       <BasicDataTable

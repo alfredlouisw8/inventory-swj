@@ -5,19 +5,30 @@ import prisma from '@/lib/prisma'
 import { getWhereConditions } from '@/utils/functions'
 import { SortingState } from '@tanstack/react-table'
 
-export default async function getServices<TData>(options: {
-  pageIndex: number
-  pageSize: number
-  filters: FilterType[]
-  sorting?: SortingState
-  consolidatorId?: string
-}): Promise<{ data: TData[]; count: number }> {
-  const { pageIndex, pageSize, filters, sorting, consolidatorId } = options
+export default async function getServices<TData>(
+  options: {
+    pageIndex: number
+    pageSize: number
+    filters: FilterType[]
+    sorting?: SortingState
+  },
+  args: {
+    consolidatorId?: string
+    serviceType: string
+  }
+): Promise<{ data: TData[]; count: number }> {
+  const { pageIndex, pageSize, filters, sorting } = options
+
+  const { consolidatorId, serviceType } = args
 
   const whereConditions = getWhereConditions(filters)
 
   if (consolidatorId) {
     whereConditions.consolidatorId = consolidatorId
+  }
+
+  if (serviceType) {
+    whereConditions.serviceType = serviceType
   }
 
   const orderBy =

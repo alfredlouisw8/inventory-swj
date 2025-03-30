@@ -1,15 +1,14 @@
-import getGoods from '@/features/goods/actions/getGoods'
-import getServiceDetail from '@/features/services/actions/getServiceDetail'
 import BackButton from '@/components/back-button'
-import AddServiceGoodDialog from '@/components/serviceGoods/add-service-goods-dialog'
 import { serviceWithGoodsColumns } from '@/components/serviceGoods/columns'
-import DeleteServiceDialog from '@/features/services/components/delete-service-dialog'
-import EditServiceDialog from '@/features/services/components/edit-service-dialog'
 import { Button } from '@/components/ui/button'
 import { DataTable } from '@/components/ui/data-table'
+import getServiceDetail from '@/features/services/actions/getServiceDetail'
+import DeleteServiceDialog from '@/features/services/components/delete-service-dialog'
+import EditServiceDialog from '@/features/services/components/edit-service-dialog'
+import { ContainerSize } from '@/features/services/types'
 import { TIMEZONE } from '@/utils/const'
-import { serviceCalculationTypeText, serviceTypeText } from '@/utils/functions'
-import { format } from 'date-fns'
+import { serviceTypeText } from '@/utils/functions'
+import { ServiceType } from '@prisma/client'
 import { formatInTimeZone } from 'date-fns-tz'
 import { PencilIcon, Trash2 } from 'lucide-react'
 
@@ -54,28 +53,59 @@ export default async function ServiceDetailPage({
         <div className="flex flex-col gap-5 w-full">
           <div>
             <p>
-              <b>Kode Jasa</b>: {serviceDetail.serviceCode}
-            </p>
-            <p>
               <b>Tipe Jasa</b>: {serviceTypeText(serviceDetail.serviceType)}
             </p>
-            <p>
-              <b>Tambah / Kurang</b>:{' '}
-              {serviceCalculationTypeText(serviceDetail.serviceCalculationType)}
-            </p>
+
             <p>
               <b>Tanggal Pengerjaan</b>:{' '}
-              {formatInTimeZone(serviceDetail.date, TIMEZONE, 'dd-MM-yyyy')}
+              {serviceDetail.date
+                ? formatInTimeZone(serviceDetail.date, TIMEZONE, 'dd-MM-yyyy')
+                : '-'}
+            </p>
+            <p>
+              <b>Nomor Truk</b>: {serviceDetail.truckNumber}
             </p>
             <p>
               <b>Keterangan</b>: {serviceDetail.remarks}
             </p>
-            <p>
-              <b>Harga Beli</b>: {serviceDetail.buyPrice}
-            </p>
-            <p>
-              <b>Harga Jual</b>: {serviceDetail.sellPrice}
-            </p>
+
+            {serviceDetail.serviceType === ServiceType.OUT && (
+              <>
+                <p>
+                  <b>Nomor Container</b>: {serviceDetail.containerNumber}
+                </p>
+                <p>
+                  <b>Ukuran Container</b>:{' '}
+                  {
+                    ContainerSize[
+                      serviceDetail.containerSize as keyof typeof ContainerSize
+                    ]
+                  }
+                </p>
+                <p>
+                  <b>Nomor PEB</b>: {serviceDetail.PEBNumber}
+                </p>
+                <p>
+                  <b>Tanggal PEB</b>:{' '}
+                  {formatInTimeZone(
+                    serviceDetail.PEBDate as Date,
+                    TIMEZONE,
+                    'dd-MM-yyyy'
+                  )}
+                </p>
+                <p>
+                  <b>Nomor NPE</b>: {serviceDetail.NPENumber}
+                </p>
+                <p>
+                  <b>Tanggal NPE</b>:{' '}
+                  {formatInTimeZone(
+                    serviceDetail.NPEDate as Date,
+                    TIMEZONE,
+                    'dd-MM-yyyy'
+                  )}
+                </p>
+              </>
+            )}
           </div>
 
           <div className="flex flex-col gap-3">

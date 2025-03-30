@@ -34,6 +34,7 @@ export type FilterType = {
   field: string
   operator: string
   value: string
+  type: keyof typeof operatorOptions
 }
 
 export type FilterFieldType = {

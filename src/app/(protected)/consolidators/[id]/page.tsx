@@ -1,23 +1,27 @@
 import getConsolidatorDetail from '@/features/consolidators/actions/getConsolidatorDetail'
-import getServices from '@/features/services/actions/getServices'
 import getGoods from '@/features/goods/actions/getGoods'
 import { goodColumns } from '@/features/goods/components/columns'
 import AddGoodDialog from '@/features/goods/components/add-good-dialog'
 import AddServiceDialog from '@/features/services/components/add-service-dialog'
 import BackButton from '@/components/back-button'
-import { serviceInColumns } from '@/features/services/components/columns'
+import {
+  serviceInColumns,
+  serviceOutColumns,
+} from '@/features/services/components/columns'
 import { Button } from '@/components/ui/button'
 import { PencilIcon, Trash2 } from 'lucide-react'
 import EditConsolidatorDialog from '@/features/consolidators/components/edit-consolidator-dialog'
 import DeleteConsolidatorDialog from '@/features/consolidators/components/delete-consolidator-dialog'
-import { CSVLink, CSVDownload } from 'react-csv'
-import ExportCSV from '@/components/export-csv'
-import { exportServicesData } from '@/features/services/actions/exportServices'
+
 import { Good, ServiceType } from '@prisma/client'
-import { serviceTypeText } from '@/utils/functions'
-import ExportInvoiceXlsx from '@/components/invoices/export-invoice'
 import { DataTable } from '@/components/ui/data-table/data-table'
-import { FilterFieldType, ServiceWithGoods } from '@/utils/types'
+import { ServiceWithGoods } from '@/utils/types'
+import { goodsFilterFields } from '@/features/goods/const'
+import {
+  servicesInFilterFields,
+  servicesOutFilterFields,
+} from '@/features/services/const'
+import { servicesFetchFunction } from '@/features/services/functions'
 
 export default async function ConsolidatorDetailPage({
   params,
@@ -31,45 +35,6 @@ export default async function ConsolidatorDetailPage({
   if (!consolidatorDetailData) {
     return <div>Consolidator tidak ditemukan</div>
   }
-
-  const servicesData = consolidatorDetailData.services
-  const goodsData = consolidatorDetailData.goods
-
-  const goodsFilterFields: FilterFieldType[] = [
-    {
-      label: 'Nama',
-      value: 'name',
-      type: 'default',
-    },
-    {
-      label: 'Shipper',
-      value: 'shipper',
-      type: 'default',
-    },
-    {
-      label: 'Consignee',
-      value: 'consignee',
-      type: 'default',
-    },
-    {
-      label: 'Tujuan',
-      value: 'destination',
-      type: 'default',
-    },
-  ]
-
-  const servicesInFilterFields: FilterFieldType[] = [
-    {
-      label: 'Tanggal Pengerjaan',
-      value: 'date',
-      type: 'date',
-    },
-    {
-      label: 'Nomor truck',
-      value: 'truckNumber',
-      type: 'default',
-    },
-  ]
 
   return (
     <>
@@ -122,9 +87,38 @@ export default async function ConsolidatorDetailPage({
             <div>
               <DataTable<ServiceWithGoods, string>
                 columns={serviceInColumns}
-                data={servicesData}
+                data={[]}
                 filterFields={servicesInFilterFields}
-                fetchFunction={getServices}
+                fetchFunction={servicesFetchFunction}
+                additionalArguments={{
+                  consolidatorId,
+                  serviceType: ServiceType.IN,
+                }}
+              />
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center justify-between">
+              <p className="text-xl font-bold">Muat</p>
+
+              <div className="flex items-center gap-2">
+                <AddServiceDialog
+                  consolidatorId={consolidatorId}
+                  serviceType={ServiceType.OUT}
+                />
+              </div>
+            </div>
+            <div>
+              <DataTable<ServiceWithGoods, string>
+                columns={serviceOutColumns}
+                data={[]}
+                filterFields={servicesOutFilterFields}
+                fetchFunction={servicesFetchFunction}
+                additionalArguments={{
+                  consolidatorId,
+                  serviceType: ServiceType.OUT,
+                }}
               />
             </div>
           </div>
@@ -140,9 +134,10 @@ export default async function ConsolidatorDetailPage({
             <div>
               <DataTable<Good, string>
                 columns={goodColumns}
-                data={goodsData}
+                data={[]}
                 filterFields={goodsFilterFields}
                 fetchFunction={getGoods}
+                additionalArguments={{ consolidatorId }}
               />
             </div>
           </div>

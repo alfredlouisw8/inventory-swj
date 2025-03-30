@@ -3,25 +3,10 @@ import AddConsolidatorDialog from '@/features/consolidators/components/add-conso
 import { consolidatorColumns } from '@/features/consolidators/components/columns'
 import { DataTable } from '@/components/ui/data-table/data-table'
 import { PER_PAGE } from '@/utils/const'
-import { FilterFieldType } from '@/utils/types'
 import { Consolidator } from '@prisma/client'
+import { consolidatorfilterFields } from '@/features/consolidators/const'
 
 export default async function ConsolidatorsPage() {
-  const { data } = await getConsolidators<Consolidator>({
-    pageIndex: 0,
-    pageSize: PER_PAGE,
-    filters: [],
-    sorting: [],
-  })
-
-  const filterFields: FilterFieldType[] = [
-    {
-      label: 'Nama',
-      value: 'name',
-      type: 'default',
-    },
-  ]
-
   return (
     <>
       <div className="flex items-center justify-between">
@@ -34,8 +19,8 @@ export default async function ConsolidatorsPage() {
       >
         <DataTable<Consolidator, string>
           columns={consolidatorColumns}
-          data={data}
-          filterFields={filterFields}
+          data={[]}
+          filterFields={consolidatorfilterFields}
           fetchFunction={getConsolidators}
         />
       </div>

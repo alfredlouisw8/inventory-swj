@@ -135,8 +135,8 @@ model Service {
 }
 
 enum ContainerSize {
-  TWENTY_FEET @map("20ft")
-  FORTY_FEET  @map("40ft")
+  TWENTY_FEET
+  FORTY_FEET
 }
 
 model Good {

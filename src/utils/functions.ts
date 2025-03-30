@@ -1,5 +1,7 @@
 import { ServiceType } from '@prisma/client'
 import { FilterType } from './types'
+import { TIMEZONE } from './const'
+import { fromZonedTime } from 'date-fns-tz'
 
 export function serviceTypeText(type: string) {
   switch (type) {
@@ -15,10 +17,19 @@ export function serviceTypeText(type: string) {
 
 export const getWhereConditions = (filters: FilterType[]) => {
   const whereConditions: Record<string, any> = {}
-
   filters.forEach((filter) => {
-    const isDateComparison = ['before', 'after'].includes(filter.operator)
-    const value = isDateComparison ? new Date(filter.value) : filter.value
+    const getValue = (type: FilterType['type'], value: FilterType['value']) => {
+      switch (type) {
+        case 'date':
+          return fromZonedTime(value, TIMEZONE)
+        case 'numeric':
+          return Number(value)
+        default:
+          return value
+      }
+    }
+
+    const value = getValue(filter.type, filter.value)
 
     switch (filter.operator) {
       case 'contains':

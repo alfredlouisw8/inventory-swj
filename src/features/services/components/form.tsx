@@ -26,14 +26,14 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '../../../components/ui/select'
-import { ContainerSize, Good, Service, ServiceType } from '@prisma/client'
+} from '@/components/ui/select'
+import { Good, Service, ServiceType } from '@prisma/client'
 import { serviceTypeText } from '@/utils/functions'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '../../../components/ui/popover'
+} from '@/components/ui/popover'
 import {
   Command,
   CommandEmpty,
@@ -43,8 +43,8 @@ import {
   CommandList,
 } from '@/components/ui/command'
 import { cn } from '@/lib/utils'
-import { Calendar } from '../../../components/ui/calendar'
-import NumberInput from '../../../components/ui/number-input'
+import { Calendar } from '@/components/ui/calendar'
+import NumberInput from '@/components/ui/number-input'
 import { ServiceSchema } from '@/features/services/actions/schema'
 import { createService } from '@/features/services/actions/createService'
 import { ServiceWithGoods } from '@/utils/types'
@@ -53,11 +53,13 @@ import { deleteService } from '@/features/services/actions/deleteService'
 import { useRouter } from 'next/navigation'
 import { formatInTimeZone } from 'date-fns-tz'
 import { TIMEZONE } from '@/utils/const'
-import FormTextField from '../../../components/ui/forms/form-text-field'
-import FormSelect from '../../../components/ui/forms/form-select'
-import FormDatePicker from '../../../components/ui/forms/form-date-picker'
-import FormTextArea from '../../../components/ui/forms/form-text-area'
+import FormTextField from '@/components/ui/forms/form-text-field'
+import FormSelect from '@/components/ui/forms/form-select'
+import FormDatePicker from '@/components/ui/forms/form-date-picker'
+import FormTextArea from '@/components/ui/forms/form-text-area'
 import getGoods from '@/features/goods/actions/getGoods'
+import { ContainerSize } from '../types'
+import { containerSizeOptions } from '../const'
 
 type Props = {
   type: 'create' | 'update' | 'delete'
@@ -83,13 +85,15 @@ export default function ServiceForm({
   const fetchGoodsByConsolidatorId = useCallback(
     async (consolidatorId: string) => {
       try {
-        const { data } = await getGoods<Good>({
-          pageIndex: 0,
-          pageSize: 100,
-          filters: [],
-          sorting: [],
-          consolidatorId,
-        })
+        const { data } = await getGoods<Good>(
+          {
+            pageIndex: 0,
+            pageSize: 100,
+            filters: [],
+            sorting: [],
+          },
+          { consolidatorId }
+        )
         setGoods(data)
       } catch (error) {
         console.error('Failed to fetch data:', error)
@@ -206,7 +210,7 @@ export default function ServiceForm({
                     label="Ukuran Container"
                     name="containerSize"
                     placeholder="Pilih ukuran container"
-                    options={Object.values(ContainerSize)}
+                    options={containerSizeOptions}
                   />
                 </>
               )}

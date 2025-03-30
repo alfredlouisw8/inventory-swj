@@ -19,7 +19,7 @@ interface FormSelectProps {
   label: string
   name: string
   placeholder: string
-  options: string[]
+  options: { label: string; value: string }[]
 }
 
 export default function FormSelect({
@@ -36,16 +36,16 @@ export default function FormSelect({
       render={({ field }) => (
         <FormItem className="flex-1">
           <FormLabel>{label}</FormLabel>
-          <Select {...field}>
+          <Select value={field.value} onValueChange={field.onChange}>
             <FormControl>
               <SelectTrigger>
                 <SelectValue placeholder={placeholder} />
               </SelectTrigger>
             </FormControl>
             <SelectContent>
-              {options.map((value) => (
+              {options.map(({ label, value }) => (
                 <SelectItem key={value} value={value}>
-                  {value}
+                  {label}
                 </SelectItem>
               ))}
             </SelectContent>

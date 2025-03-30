@@ -29,17 +29,17 @@ import { operatorOptions } from '@/utils/const'
 interface DataTableSearchProps {
   onFiltersChange: (filters: FilterType[]) => void
   filterFields: FilterFieldType[]
+  defaultFilters: FilterType[]
 }
 
-type CurrentFilterType = Omit<FilterType, 'id'> & {
-  type: keyof typeof operatorOptions
-}
+type CurrentFilterType = Omit<FilterType, 'id'>
 
 export default function DataTableSearch({
   onFiltersChange,
   filterFields,
+  defaultFilters,
 }: DataTableSearchProps) {
-  const [filters, setFilters] = useState<FilterType[]>([])
+  const [filters, setFilters] = useState<FilterType[]>(defaultFilters)
   const [open, setOpen] = useState(false)
   const [currentFilter, setCurrentFilter] = useState<CurrentFilterType>({
     field: filterFields[0].value,
@@ -97,7 +97,13 @@ export default function DataTableSearch({
               <Select
                 value={currentFilter.field}
                 onValueChange={(value) =>
-                  setCurrentFilter({ ...currentFilter, field: value })
+                  setCurrentFilter({
+                    ...currentFilter,
+                    field: value,
+                    type:
+                      filterFields.find((f) => f.value === value)?.type ||
+                      'default',
+                  })
                 }
               >
                 <SelectTrigger className="w-full">
@@ -142,7 +148,7 @@ export default function DataTableSearch({
                   ))}
                 </TooltipProvider>
               </div>
-              {currentFilter.field === 'date' ? (
+              {currentFilter.type === 'date' ? (
                 <Popover>
                   <PopoverTrigger asChild>
                     <Button
@@ -170,10 +176,10 @@ export default function DataTableSearch({
                     />
                   </PopoverContent>
                 </Popover>
-              ) : currentFilter.field === 'age' ? (
+              ) : currentFilter.type === 'numeric' ? (
                 <Input
                   type="number"
-                  placeholder="Enter age"
+                  placeholder="Enter number"
                   value={currentFilter.value}
                   onChange={(e) =>
                     setCurrentFilter({
