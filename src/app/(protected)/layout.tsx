@@ -33,7 +33,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Input } from '@/components/ui/input'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
-import LogoutButton from '@/components/auth/logout-button'
+import LogoutButton from '@/features/auth/components/logout-button'
 import { auth } from '@/lib/auth/auth'
 import { redirect } from 'next/navigation'
 

@@ -1,5 +1,5 @@
 import BackButton from '@/components/back-button'
-import { serviceWithGoodsColumns } from '@/components/serviceGoods/columns'
+import { serviceWithGoodsColumns } from '@/features/serviceGoods/columns'
 import { Button } from '@/components/ui/button'
 import { DataTable } from '@/components/ui/data-table'
 import getServiceDetail from '@/features/services/actions/getServiceDetail'

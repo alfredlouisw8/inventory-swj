@@ -8,7 +8,6 @@ import { auth } from '@/lib/auth/auth'
 import prisma from '@/lib/prisma'
 import { ConsolidatorSchema } from '../schema'
 import { InputType, ReturnType } from '../types'
-import { createLogEntry, generateLogMessage } from '@/actions/logs/functions'
 import { Role } from '@prisma/client'
 
 const handler = async (data: InputType): Promise<ReturnType> => {

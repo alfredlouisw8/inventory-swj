@@ -25,9 +25,9 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { redirect, useRouter } from 'next/navigation'
 import { signInSchema } from '@/lib/auth/auth.config'
-import { ChangePasswordSchema } from '@/actions/users/changePassword/schema'
+import { ChangePasswordSchema } from '@/features/auth/actions/changePassword/schema'
 import { useAction } from '@/hooks/useAction'
-import { changePassword } from '@/actions/users/changePassword'
+import { changePassword } from '@/features/auth/actions/changePassword'
 
 export default function ChangePasswordForm() {
   const router = useRouter()
