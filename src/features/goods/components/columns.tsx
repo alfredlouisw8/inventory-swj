@@ -8,6 +8,8 @@ import { Button, buttonVariants } from '@/components/ui/button'
 import Link from 'next/link'
 import EditGoodDialog from './edit-good-dialog'
 import DeleteGoodDialog from './delete-good-dialog'
+import { TIMEZONE } from '@/utils/const'
+import { formatInTimeZone } from 'date-fns-tz'
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -82,6 +84,70 @@ export const goodColumns: ColumnDef<Good>[] = [
         </Button>
       )
     },
+  },
+  {
+    accessorKey: 'NPENumber',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Nomor NPE
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
+  },
+  {
+    accessorKey: 'NPEDate',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Tanggal NPE
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
+    cell: ({ row }) =>
+      row.original.NPEDate
+        ? formatInTimeZone(row.original.NPEDate, TIMEZONE, 'dd-MM-yyyy')
+        : '',
+  },
+  {
+    accessorKey: 'PEBNumber',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Nomor PEB
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
+  },
+  {
+    accessorKey: 'PEBDate',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Tanggal PEB
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
+    cell: ({ row }) =>
+      row.original.PEBDate
+        ? formatInTimeZone(row.original.PEBDate, TIMEZONE, 'dd-MM-yyyy')
+        : '',
   },
   {
     accessorKey: 'currentQuantity',

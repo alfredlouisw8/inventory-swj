@@ -19,7 +19,7 @@ export default function EditGoodDialog({ goodData, triggerComponent }: Props) {
   return (
     <Dialog>
       <DialogTrigger asChild>{triggerComponent}</DialogTrigger>
-      <DialogContent>
+      <DialogContent className="max-w-5xl max-h-[calc(100vh-160px)] overflow-auto">
         <DialogHeader>
           <DialogTitle>Ubah Barang</DialogTitle>
         </DialogHeader>

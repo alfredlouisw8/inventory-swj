@@ -28,6 +28,7 @@ import { useRouter } from 'next/navigation'
 import FormNumberField from '../../../components/ui/forms/form-number-input'
 import FormTextField from '../../../components/ui/forms/form-text-field'
 import FormTextArea from '../../../components/ui/forms/form-text-area'
+import FormDatePicker from '@/components/ui/forms/form-date-picker'
 
 type Props = {
   type: 'create' | 'update' | 'delete'
@@ -110,47 +111,79 @@ export default function GoodForm({
           <p>Apakah anda yakin ingin menghapus barang ini?</p>
         ) : (
           <>
-            <FormTextField
-              form={form}
-              name="name"
-              label="Nama barang"
-              placeholder="Nama barang"
-            />
+            <div className="flex items-center gap-5">
+              <FormTextField
+                form={form}
+                name="name"
+                label="Nama barang"
+                placeholder="Nama barang"
+              />
 
-            <FormTextField
-              form={form}
-              name="shipper"
-              label="Shipper"
-              placeholder="Shipper"
-            />
+              <FormTextField
+                form={form}
+                name="shipper"
+                label="Shipper"
+                placeholder="Shipper"
+              />
 
-            <FormTextField
-              form={form}
-              name="consignee"
-              label="Consignee"
-              placeholder="Consignee"
-            />
+              <FormTextField
+                form={form}
+                name="consignee"
+                label="Consignee"
+                placeholder="Consignee"
+              />
+            </div>
 
-            <FormTextField
-              form={form}
-              name="destination"
-              label="Tujuan"
-              placeholder="Tujuan"
-            />
+            <div className="flex items-center gap-5">
+              <FormTextField
+                form={form}
+                name="destination"
+                label="Tujuan"
+                placeholder="Tujuan"
+              />
 
-            <FormTextField
-              form={form}
-              name="packageType"
-              label="Packaging"
-              placeholder="Packaging"
-            />
+              <FormTextField
+                form={form}
+                name="packageType"
+                label="Packaging"
+                placeholder="Packaging"
+              />
 
-            <FormNumberField
-              form={form}
-              name="currentQuantity"
-              label="Jumlah barang"
-              placeholder="Jumlah barang"
-            />
+              <FormNumberField
+                form={form}
+                name="currentQuantity"
+                label="Jumlah barang"
+                placeholder="Jumlah barang"
+              />
+            </div>
+
+            <div className="flex items-center gap-5">
+              <FormTextField
+                form={form}
+                label="Nomor NPE"
+                name="NPENumber"
+                placeholder="Nomor NPE"
+              />
+              <FormDatePicker
+                form={form}
+                name="NPEDate"
+                label="Tanggal NPE"
+                placeholder="Pilih tanggal"
+              />
+
+              <FormTextField
+                form={form}
+                label="Nomor PEB"
+                name="PEBNumber"
+                placeholder="Nomor PEB"
+              />
+              <FormDatePicker
+                form={form}
+                name="PEBDate"
+                label="Tanggal PEB"
+                placeholder="Pilih tanggal"
+              />
+            </div>
 
             <FormTextArea
               form={form}

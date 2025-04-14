@@ -31,23 +31,13 @@ export const servicesOutFilterFields: FilterFieldType[] = [
     type: 'default',
   },
   {
-    label: 'Nomor PEB',
-    value: 'PEBNumber',
+    label: 'Nomor PKBE',
+    value: 'PKBENumber',
     type: 'default',
   },
   {
-    label: 'Tanggal PEB',
-    value: 'PEBDate',
-    type: 'date',
-  },
-  {
-    label: 'Nomor NPE',
-    value: 'NPENumber',
-    type: 'default',
-  },
-  {
-    label: 'Tanggal NPE',
-    value: 'NPEDate',
+    label: 'Tanggal PKBE',
+    value: 'PKBEDate',
     type: 'date',
   },
 ]

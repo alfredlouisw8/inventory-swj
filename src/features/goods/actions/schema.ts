@@ -10,6 +10,10 @@ export const GoodSchema = z.object({
   consignee: z.string(),
   destination: z.string(),
   packageType: z.string(),
+  NPENumber: z.string().optional(),
+  NPEDate: z.date().optional(),
+  PEBNumber: z.string().optional(),
+  PEBDate: z.date().optional(),
   currentQuantity: z.number(),
   remarks: z.string().optional(),
 })

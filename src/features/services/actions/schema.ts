@@ -8,10 +8,8 @@ export const ServiceSchema = z.object({
   remarks: z.string().optional(),
   truckNumber: z.string(),
   containerNumber: z.string().optional(),
-  PEBNumber: z.string().optional(),
-  PEBDate: z.date().optional(),
-  NPENumber: z.string().optional(),
-  NPEDate: z.date().optional(),
+  PKBENumber: z.string().optional(),
+  PKBEDate: z.date().optional(),
   containerSize: z.nativeEnum(ContainerSize).optional(),
   consolidatorId: z.string(),
   goods: z.array(

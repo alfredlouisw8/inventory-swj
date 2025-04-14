@@ -20,10 +20,8 @@ const handler = async (data: InputType): Promise<ReturnType> => {
   const {
     serviceType,
     truckNumber,
-    NPEDate,
-    PEBNumber,
-    NPENumber,
-    PEBDate,
+    PKBEDate,
+    PKBENumber,
     containerNumber,
     containerSize,
     date,
@@ -42,10 +40,8 @@ const handler = async (data: InputType): Promise<ReturnType> => {
         consolidatorId,
         truckNumber,
         containerNumber,
-        PEBNumber,
-        PEBDate,
-        NPENumber,
-        NPEDate,
+        PKBEDate,
+        PKBENumber,
         containerSize,
         serviceGoods: {
           create: goods.map(({ goodId, quantity }) => ({

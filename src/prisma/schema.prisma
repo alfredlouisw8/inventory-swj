@@ -118,10 +118,8 @@ model Service {
   serviceType     ServiceType
   truckNumber     String?
   containerNumber String?
-  PEBNumber       String?
-  PEBDate         DateTime?
-  NPENumber       String?
-  NPEDate         DateTime?
+  PKBENumber      String?
+  PKBEDate        DateTime?
   containerSize   ContainerSize?
   remarks         String?
 
@@ -140,13 +138,17 @@ enum ContainerSize {
 }
 
 model Good {
-  id              String  @id @default(auto()) @map("_id") @db.ObjectId
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
   name            String
   shipper         String
   consignee       String
   destination     String
   packageType     String
-  currentQuantity Int     @default(0)
+  PEBNumber       String?
+  PEBDate         DateTime?
+  NPENumber       String?
+  NPEDate         DateTime?
+  currentQuantity Int       @default(0)
   remarks         String?
 
   createdAt DateTime @default(now())

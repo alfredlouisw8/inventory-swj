@@ -22,6 +22,26 @@ export const goodsFilterFields: FilterFieldType[] = [
     type: 'default',
   },
   {
+    label: 'Nomor NPE',
+    value: 'NPENumber',
+    type: 'default',
+  },
+  {
+    label: 'Tanggal NPE',
+    value: 'NPEDate',
+    type: 'date',
+  },
+  {
+    label: 'Nomor PEB',
+    value: 'PEBNumber',
+    type: 'default',
+  },
+  {
+    label: 'Tanggal PEB',
+    value: 'PEBDate',
+    type: 'date',
+  },
+  {
     label: 'Jumlah',
     value: 'currentQuantity',
     type: 'numeric',

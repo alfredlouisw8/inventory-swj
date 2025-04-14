@@ -19,7 +19,7 @@ export default function AddGoodDialog({ consolidatorId }: Props) {
       <DialogTrigger asChild>
         <Button>Tambah</Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="max-w-5xl max-h-[calc(100vh-160px)] overflow-auto">
         <DialogHeader>
           <DialogTitle>Tambah Barang</DialogTitle>
         </DialogHeader>

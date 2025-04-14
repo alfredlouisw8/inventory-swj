@@ -153,64 +153,36 @@ export const serviceOutColumns: ColumnDef<ServiceWithGoods>[] = [
     },
   },
   {
-    accessorKey: 'NPENumber',
+    accessorKey: 'PKBENumber',
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
-          Nomor NPE
+          Nomor PKBE
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       )
     },
   },
   {
-    accessorKey: 'NPEDate',
+    accessorKey: 'PKBEDate',
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
-          Tanggal NPE
+          Tanggal PKBE
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       )
     },
     cell: ({ row }) =>
-      formatInTimeZone(row.original.date, TIMEZONE, 'dd-MM-yyyy'),
-  },
-  {
-    accessorKey: 'PEBNumber',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Nomor PEB
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      )
-    },
-  },
-  {
-    accessorKey: 'PEBDate',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Tanggal PEB
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      )
-    },
-    cell: ({ row }) =>
-      formatInTimeZone(row.original.date, TIMEZONE, 'dd-MM-yyyy'),
+      row.original.PKBEDate
+        ? formatInTimeZone(row.original.PKBEDate, TIMEZONE, 'dd-MM-yyyy')
+        : '',
   },
   {
     accessorKey: 'containerSize',

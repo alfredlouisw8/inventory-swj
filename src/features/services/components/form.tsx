@@ -109,10 +109,8 @@ export default function ServiceForm({
       serviceType,
       truckNumber: serviceData?.truckNumber || '',
       containerNumber: serviceData?.containerNumber || '',
-      PEBNumber: serviceData?.PEBNumber || '',
-      PEBDate: serviceData?.PEBDate || undefined,
-      NPENumber: serviceData?.NPENumber || '',
-      NPEDate: serviceData?.NPEDate || undefined,
+      PKBENumber: serviceData?.PKBENumber || '',
+      PKBEDate: serviceData?.PKBEDate || undefined,
       containerSize: serviceData?.containerSize || undefined,
       date: serviceData?.date || undefined,
       remarks: serviceData?.remarks || '',
@@ -227,26 +225,14 @@ export default function ServiceForm({
               <div className="flex items-center gap-5">
                 <FormTextField
                   form={form}
-                  label="Nomor PEB"
-                  name="PEBNumber"
-                  placeholder="Nomor PEB"
+                  label="Nomor PKBE"
+                  name="PKBENumber"
+                  placeholder="Nomor PKBE"
                 />
                 <FormDatePicker
                   form={form}
-                  name="PEBDate"
-                  label="Tanggal PEB"
-                  placeholder="Pilih tanggal"
-                />
-                <FormTextField
-                  form={form}
-                  label="Nomor NPE"
-                  name="NPENumber"
-                  placeholder="Nomor NPE"
-                />
-                <FormDatePicker
-                  form={form}
-                  name="NPEDate"
-                  label="Tanggal NPE"
+                  name="PKBEDate"
+                  label="Tanggal PKBE"
                   placeholder="Pilih tanggal"
                 />
               </div>
@@ -295,11 +281,16 @@ export default function ServiceForm({
                             )}
                           >
                             {form.watch(`goods.${index}.goodId`)
-                              ? goods.find(
-                                  (good) =>
-                                    good.id ===
-                                    form.watch(`goods.${index}.goodId`)
-                                )?.name
+                              ? (() => {
+                                  const selectedGood = goods.find(
+                                    (good) =>
+                                      good.id ===
+                                      form.watch(`goods.${index}.goodId`)
+                                  )
+                                  return selectedGood
+                                    ? `${selectedGood.name} - ${selectedGood.shipper} - ${selectedGood.consignee}`
+                                    : 'Pilih barang'
+                                })()
                               : 'Pilih barang'}
                             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                           </Button>
