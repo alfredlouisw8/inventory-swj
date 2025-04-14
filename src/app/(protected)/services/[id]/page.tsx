@@ -83,26 +83,17 @@ export default async function ServiceDetailPage({
                   }
                 </p>
                 <p>
-                  <b>Nomor PEB</b>: {serviceDetail.PEBNumber}
+                  <b>Nomor PKBE</b>: {serviceDetail.PKBENumber}
                 </p>
                 <p>
-                  <b>Tanggal PEB</b>:{' '}
-                  {formatInTimeZone(
-                    serviceDetail.PEBDate as Date,
-                    TIMEZONE,
-                    'dd-MM-yyyy'
-                  )}
-                </p>
-                <p>
-                  <b>Nomor NPE</b>: {serviceDetail.NPENumber}
-                </p>
-                <p>
-                  <b>Tanggal NPE</b>:{' '}
-                  {formatInTimeZone(
-                    serviceDetail.NPEDate as Date,
-                    TIMEZONE,
-                    'dd-MM-yyyy'
-                  )}
+                  <b>Tanggal PKBE</b>:{' '}
+                  {serviceDetail.PKBEDate
+                    ? formatInTimeZone(
+                        serviceDetail.PKBEDate as Date,
+                        TIMEZONE,
+                        'dd-MM-yyyy'
+                      )
+                    : ''}
                 </p>
               </>
             )}
