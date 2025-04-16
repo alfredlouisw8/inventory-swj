@@ -59,6 +59,8 @@ export default function GoodForm({
       currentQuantity: goodData?.currentQuantity || 0,
       consolidatorId,
       remarks: goodData?.remarks || '',
+      truckNumber: goodData?.truckNumber || '',
+      date: goodData?.date || undefined,
     },
   })
 
@@ -181,6 +183,21 @@ export default function GoodForm({
                 form={form}
                 name="PEBDate"
                 label="Tanggal PEB"
+                placeholder="Pilih tanggal"
+              />
+            </div>
+
+            <div className="flex items-center gap-5">
+              <FormTextField
+                form={form}
+                name="truckNumber"
+                label="Nomor Truk"
+                placeholder="Nomor Truk"
+              />
+              <FormDatePicker
+                form={form}
+                name="date"
+                label="Tanggal"
                 placeholder="Pilih tanggal"
               />
             </div>

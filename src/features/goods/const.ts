@@ -42,6 +42,16 @@ export const goodsFilterFields: FilterFieldType[] = [
     type: 'date',
   },
   {
+    label: 'Nomor Truck',
+    value: 'truckNumber',
+    type: 'default',
+  },
+  {
+    label: 'Tanggal Pengerjaan',
+    value: 'date',
+    type: 'date',
+  },
+  {
     label: 'Jumlah',
     value: 'currentQuantity',
     type: 'numeric',

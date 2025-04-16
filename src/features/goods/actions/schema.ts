@@ -15,5 +15,7 @@ export const GoodSchema = z.object({
   PEBNumber: z.string().optional(),
   PEBDate: z.date().optional(),
   currentQuantity: z.number(),
+  truckNumber: z.string().optional(), // service in
+  date: z.date().optional(), // service in
   remarks: z.string().optional(),
 })

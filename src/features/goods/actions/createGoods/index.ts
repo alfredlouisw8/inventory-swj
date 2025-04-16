@@ -31,6 +31,8 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     NPENumber,
     shipper,
     currentQuantity,
+    truckNumber,
+    date,
     remarks,
     consolidatorId,
   } = data
@@ -47,6 +49,8 @@ const handler = async (data: InputType): Promise<ReturnType> => {
           PEBNumber,
           NPEDate,
           NPENumber,
+          truckNumber,
+          date,
           shipper,
           currentQuantity,
           consolidatorId,

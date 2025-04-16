@@ -149,6 +149,8 @@ model Good {
   NPENumber       String?
   NPEDate         DateTime?
   currentQuantity Int       @default(0)
+  truckNumber     String?
+  date            DateTime?
   remarks         String?
 
   createdAt DateTime @default(now())

@@ -73,7 +73,7 @@ export default async function ConsolidatorDetailPage({
             </p>
           </div>
 
-          <div className="flex flex-col gap-3">
+          {/* <div className="flex flex-col gap-3">
             <div className="flex items-center justify-between">
               <p className="text-xl font-bold">Bongkar</p>
 
@@ -96,7 +96,7 @@ export default async function ConsolidatorDetailPage({
                 }}
               />
             </div>
-          </div>
+          </div> */}
 
           <div className="flex flex-col gap-3">
             <div className="flex items-center justify-between">

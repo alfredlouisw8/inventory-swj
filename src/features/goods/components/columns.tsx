@@ -150,6 +150,38 @@ export const goodColumns: ColumnDef<Good>[] = [
         : '',
   },
   {
+    accessorKey: 'truckNumber',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Nomor Truck
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
+  },
+  {
+    accessorKey: 'date',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Tanggal Pengerjaan
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
+    cell: ({ row }) =>
+      row.original.date
+        ? formatInTimeZone(row.original.date, TIMEZONE, 'dd-MM-yyyy')
+        : '',
+  },
+  {
     accessorKey: 'currentQuantity',
     header: ({ column }) => {
       return (
