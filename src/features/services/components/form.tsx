@@ -288,7 +288,7 @@ export default function ServiceForm({
                                       form.watch(`goods.${index}.goodId`)
                                   )
                                   return selectedGood
-                                    ? `${selectedGood.name} - ${selectedGood.shipper} - ${selectedGood.consignee}`
+                                    ? `${selectedGood.name} - ${selectedGood.shipper} - ${selectedGood.consignee} - ${selectedGood.NPENumber} - ${selectedGood.PEBNumber}`
                                     : 'Pilih barang'
                                 })()
                               : 'Pilih barang'}
@@ -326,7 +326,7 @@ export default function ServiceForm({
                                         : 'opacity-0'
                                     )}
                                   />
-                                  {`${good.name} - ${good.shipper} - ${good.consignee}`}
+                                  {`${good.name} - ${good.shipper} - ${good.consignee} - ${good.NPENumber} - ${good.PEBNumber}`}
                                 </CommandItem>
                               ))}
                             </CommandGroup>
