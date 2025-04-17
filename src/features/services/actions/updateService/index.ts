@@ -7,7 +7,6 @@ import prisma from '@/lib/prisma'
 import { PrismaPromise, Role, ServiceType } from '@prisma/client'
 import { InputType, ReturnType } from '../types'
 import { ServiceSchema } from '../schema'
-import { revertInventoryChanges } from '../functions'
 
 async function updateServiceInBackground(data: InputType, userId: string) {
   const {
@@ -31,57 +30,74 @@ async function updateServiceInBackground(data: InputType, userId: string) {
 
   if (!previousService) throw new Error('Service not found')
 
+  const oldGoodsMap = new Map(
+    previousService.serviceGoods.map((item) => [item.goodId, item.quantity])
+  )
+
+  const deltas: Record<string, number> = {}
+  for (const { goodId, quantity } of goods) {
+    const prevQty = oldGoodsMap.get(goodId) ?? 0
+    const diff = quantity - prevQty
+    const delta =
+      serviceType === ServiceType.IN
+        ? diff
+        : serviceType === ServiceType.OUT
+        ? -diff
+        : 0
+
+    if (delta !== 0) {
+      deltas[goodId] = (deltas[goodId] || 0) + delta
+    }
+  }
+
+  let updatedService
+
   const transactions: PrismaPromise<any>[] = []
 
-  transactions.push(
-    ...revertInventoryChanges(
-      previousService.serviceType,
-      previousService.serviceGoods
-    )
-  )
-
-  transactions.push(
-    prisma.service.update({
-      where: { id: serviceId },
-      data: {
-        serviceType: serviceType as ServiceType,
-        date,
-        remarks,
-        truckNumber,
-        PKBEDate,
-        PKBENumber,
-        containerNumber,
-        containerSize,
-        consolidatorId,
-        serviceGoods: {
-          upsert: goods.map(({ goodId, quantity }) => ({
-            where: { serviceId_goodId: { serviceId, goodId } },
-            update: { quantity },
-            create: { goodId, quantity },
-          })),
-        },
+  const updateServicePromise = prisma.service.update({
+    where: { id: serviceId },
+    data: {
+      serviceType: serviceType as ServiceType,
+      date,
+      remarks,
+      truckNumber,
+      PKBEDate,
+      PKBENumber,
+      containerNumber,
+      containerSize,
+      consolidatorId,
+      serviceGoods: {
+        upsert: goods.map(({ goodId, quantity }) => ({
+          where: { serviceId_goodId: { serviceId, goodId } },
+          update: { quantity },
+          create: { goodId, quantity },
+        })),
       },
-    })
-  )
-
-  const goodsUpdates = goods.map(({ goodId, quantity }) => {
-    const data =
-      serviceType === ServiceType.IN
-        ? { increment: quantity }
-        : serviceType === ServiceType.OUT
-        ? { decrement: quantity }
-        : undefined
-
-    return prisma.good.update({
-      where: { id: goodId },
-      data: { currentQuantity: data },
-    })
+    },
   })
 
-  await prisma.$transaction([...transactions, ...goodsUpdates])
+  transactions.push(updateServicePromise)
+
+  for (const [goodId, delta] of Object.entries(deltas)) {
+    transactions.push(
+      prisma.good.update({
+        where: { id: goodId },
+        data: {
+          currentQuantity: {
+            increment: delta,
+          },
+        },
+      })
+    )
+  }
+
+  const [service] = await prisma.$transaction(transactions)
+  updatedService = service
 
   revalidatePath(`/consolidators/${consolidatorId}`)
   revalidatePath(`/services/${serviceId}`)
+
+  return updatedService
 }
 
 const handler = async (data: InputType): Promise<ReturnType> => {
@@ -91,15 +107,12 @@ const handler = async (data: InputType): Promise<ReturnType> => {
   if (session.user.role === Role.USER)
     return { error: 'Anda tidak punya akses' }
 
-  // Fire and forget the heavy update
-  updateServiceInBackground(data, session.user.id).catch((err) =>
+  try {
+    const service = await updateServiceInBackground(data, session.user.id)
+    return { data: service }
+  } catch (err: any) {
     console.error('Update failed:', err)
-  )
-
-  return {
-    data: {
-      message: 'Perubahan sedang diproses. Silakan refresh nanti.',
-    },
+    return { error: err.message || 'Gagal mengupdate jasa' }
   }
 }
 

@@ -6,4 +6,4 @@ import { ActionState } from '@/lib/create-safe-action'
 import { ServiceSchema } from './schema'
 
 export type InputType = z.infer<typeof ServiceSchema>
-export type ReturnType = ActionState<InputType, { message: string }>
+export type ReturnType = ActionState<InputType, Service>
