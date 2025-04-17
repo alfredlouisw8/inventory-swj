@@ -89,7 +89,15 @@ export default function ServiceForm({
           {
             pageIndex: 0,
             pageSize: 100,
-            filters: [],
+            filters: [
+              {
+                id: 'currentQuantity',
+                value: '0',
+                operator: 'greaterThan',
+                field: 'currentQuantity',
+                type: 'numeric',
+              },
+            ],
             sorting: [],
           },
           { consolidatorId }
@@ -275,7 +283,7 @@ export default function ServiceForm({
                             variant="outline"
                             role="combobox"
                             className={cn(
-                              'min-w-[700px] justify-between',
+                              'min-w-[900px] justify-between',
                               !form.watch(`goods.${index}.goodId`) &&
                                 'text-muted-foreground'
                             )}
@@ -288,7 +296,7 @@ export default function ServiceForm({
                                       form.watch(`goods.${index}.goodId`)
                                   )
                                   return selectedGood
-                                    ? `${selectedGood.name} - ${selectedGood.shipper} - ${selectedGood.consignee} - ${selectedGood.NPENumber} - ${selectedGood.PEBNumber}`
+                                    ? `${selectedGood.name} - ${selectedGood.shipper} - ${selectedGood.consignee} - ${selectedGood.destination} -  ${selectedGood.NPENumber} - ${selectedGood.PEBNumber}`
                                     : 'Pilih barang'
                                 })()
                               : 'Pilih barang'}
@@ -296,7 +304,7 @@ export default function ServiceForm({
                           </Button>
                         </FormControl>
                       </PopoverTrigger>
-                      <PopoverContent className="min-w-[700px] p-0">
+                      <PopoverContent className="min-w-[900px] p-0">
                         <Command>
                           <CommandInput placeholder="Search good..." />
                           <CommandList>
@@ -304,7 +312,7 @@ export default function ServiceForm({
                             <CommandGroup>
                               {goods.map((good) => (
                                 <CommandItem
-                                  value={good.name}
+                                  value={good.id}
                                   key={good.id}
                                   onSelect={() => {
                                     form.setValue(
@@ -326,7 +334,7 @@ export default function ServiceForm({
                                         : 'opacity-0'
                                     )}
                                   />
-                                  {`${good.name} - ${good.shipper} - ${good.consignee} - ${good.NPENumber} - ${good.PEBNumber}`}
+                                  {`${good.name} - ${good.shipper} - ${good.consignee} - ${good.destination} - ${good.NPENumber} - ${good.PEBNumber}`}
                                 </CommandItem>
                               ))}
                             </CommandGroup>

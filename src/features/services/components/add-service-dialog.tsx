@@ -24,7 +24,7 @@ export default function AddServiceDialog({
       <DialogTrigger asChild>
         <Button>Tambah</Button>
       </DialogTrigger>
-      <DialogContent className="max-w-5xl max-h-[calc(100vh-160px)] overflow-auto">
+      <DialogContent className="max-w-7xl max-h-[90vh] overflow-auto">
         <DialogHeader>
           <DialogTitle>Tambah Jasa</DialogTitle>
         </DialogHeader>

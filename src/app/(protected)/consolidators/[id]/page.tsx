@@ -138,6 +138,15 @@ export default async function ConsolidatorDetailPage({
                 filterFields={goodsFilterFields}
                 fetchFunction={getGoods}
                 additionalArguments={{ consolidatorId }}
+                defaultFilters={[
+                  {
+                    id: 'id',
+                    value: '0',
+                    field: 'currentQuantity',
+                    operator: 'greaterThan',
+                    type: 'numeric',
+                  },
+                ]}
               />
             </div>
           </div>
