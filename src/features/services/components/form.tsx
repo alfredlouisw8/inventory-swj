@@ -143,9 +143,9 @@ export default function ServiceForm({
   }
 
   const { execute, fieldErrors } = useAction(actions[type], {
-    onSuccess: () => {
+    onSuccess: (data) => {
       toast({
-        title: successMessage,
+        title: data.message,
       })
       closeDialogRef.current?.click()
 

@@ -4,19 +4,11 @@ import { revalidatePath } from 'next/cache'
 import { createSafeAction } from '@/lib/create-safe-action'
 import { auth } from '@/lib/auth/auth'
 import prisma from '@/lib/prisma'
-import { PrismaPromise, ServiceType } from '@prisma/client'
+import { PrismaPromise, Role, ServiceType } from '@prisma/client'
 import { InputType, ReturnType } from '../types'
 import { ServiceSchema } from '../schema'
 
-const handler = async (data: InputType): Promise<ReturnType> => {
-  const session = await auth()
-
-  if (!session?.user) {
-    return {
-      error: 'Silahkan login',
-    }
-  }
-
+async function createServiceInBackground(data: InputType, userId: string) {
   const {
     serviceType,
     truckNumber,
@@ -30,69 +22,64 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     goods,
   } = data
 
-  try {
-    // Create the service and related goods
-    const servicePromise = prisma.service.create({
-      data: {
-        serviceType: serviceType as ServiceType,
-        date,
-        remarks,
-        consolidatorId,
-        truckNumber,
-        containerNumber,
-        PKBEDate,
-        PKBENumber,
-        containerSize,
-        serviceGoods: {
-          create: goods.map(({ goodId, quantity }) => ({
-            goodId,
-            quantity,
-          })),
-        },
+  const service = await prisma.service.create({
+    data: {
+      serviceType: serviceType as ServiceType,
+      date,
+      remarks,
+      consolidatorId,
+      truckNumber,
+      containerNumber,
+      PKBEDate,
+      PKBENumber,
+      containerSize,
+      serviceGoods: {
+        create: goods.map(({ goodId, quantity }) => ({
+          goodId,
+          quantity,
+        })),
       },
+    },
+  })
+
+  const goodsUpdates = goods.map(({ quantity, goodId }) => {
+    const updateData =
+      serviceType === ServiceType.IN
+        ? { increment: quantity }
+        : serviceType === ServiceType.OUT
+        ? { decrement: quantity }
+        : {}
+
+    return prisma.good.update({
+      where: { id: goodId },
+      data: { currentQuantity: updateData },
     })
+  })
 
-    // Create an array of Prisma promises for goods updates
-    const goodsUpdates = goods.reduce((acc, { quantity, goodId }) => {
-      let calculationType = {}
+  await prisma.$transaction(goodsUpdates)
 
-      // Handle Add and Subtract calculation types
-      switch (serviceType) {
-        case ServiceType.IN:
-          calculationType = { increment: quantity }
-          break
-        case ServiceType.OUT:
-          calculationType = { decrement: quantity }
-          break
-        default:
-          break
-      }
+  revalidatePath(`/consolidators/${consolidatorId}`)
+  revalidatePath(`/services/${service.id}`)
+}
 
-      // Push the Prisma promise for updating goods to the accumulator
-      acc.push(
-        prisma.good.update({
-          where: { id: goodId },
-          data: { currentQuantity: calculationType },
-        })
-      )
+const handler = async (data: InputType): Promise<ReturnType> => {
+  const session = await auth()
 
-      return acc
-    }, [] as PrismaPromise<any>[])
-
-    // Execute the transaction with the service creation and goods updates
-    const [service] = await prisma.$transaction([
-      servicePromise,
-      ...goodsUpdates,
-    ])
-
-    // Revalidate the cache after successful operations
-    revalidatePath(`/consolidators/${consolidatorId}`)
-    return { data: service }
-  } catch (error: any) {
-    console.error(error.message)
+  if (!session?.user) {
     return {
-      error: error.message || 'Gagal menambah jasa',
+      error: 'Silahkan login',
     }
+  }
+
+  // Fire and forget the heavy create logic
+  createServiceInBackground(data, session.user.id).catch((err) =>
+    console.error('Create failed:', err)
+  )
+
+  return {
+    data: {
+      message: 'Jasa sedang diproses. Silakan refresh nanti.',
+    },
   }
 }
 
