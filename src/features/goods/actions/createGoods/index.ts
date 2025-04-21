@@ -8,6 +8,7 @@ import { auth } from '@/lib/auth/auth'
 import prisma from '@/lib/prisma'
 import { InputType, ReturnType } from '../types'
 import { GoodSchema } from '../schema'
+import { createErrorLogs, createLogs } from '@/features/logs/actions/createLogs'
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const session = await auth()
@@ -60,8 +61,15 @@ const handler = async (data: InputType): Promise<ReturnType> => {
 
       return good
     })
+
+    createLogs({ data: data, actionType: 'createGood' })
   } catch (error: any) {
     console.error(error.message)
+    createErrorLogs({
+      data: data,
+      errorMessage: error.message,
+      actionType: 'createGood',
+    })
     return {
       error: error.message || 'Gagal menambah barang',
     }

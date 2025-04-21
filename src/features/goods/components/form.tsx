@@ -61,6 +61,10 @@ export default function GoodForm({
       remarks: goodData?.remarks || '',
       truckNumber: goodData?.truckNumber || '',
       date: goodData?.date || undefined,
+      PEBDate: goodData?.PEBDate || undefined,
+      PEBNumber: goodData?.PEBNumber || '',
+      NPEDate: goodData?.NPEDate || undefined,
+      NPENumber: goodData?.NPENumber || '',
     },
   })
 

@@ -7,6 +7,7 @@ import prisma from '@/lib/prisma'
 import { ServiceType } from '@prisma/client'
 import { InputType, ReturnType } from '../types'
 import { ServiceSchema } from '../schema'
+import { createErrorLogs, createLogs } from '@/features/logs/actions/createLogs'
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const session = await auth()
@@ -72,9 +73,16 @@ const handler = async (data: InputType): Promise<ReturnType> => {
 
     revalidatePath(`/consolidators/${consolidatorId}`)
 
+    createLogs({ data: data, actionType: 'createService' })
+
     return { data: service }
   } catch (error: any) {
     console.error(error)
+    createErrorLogs({
+      data: data,
+      actionType: 'createService',
+      errorMessage: error.message,
+    })
     return {
       error: error.message || 'Gagal menambah jasa',
     }

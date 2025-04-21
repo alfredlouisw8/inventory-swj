@@ -7,6 +7,7 @@ import prisma from '@/lib/prisma'
 import { PrismaPromise, Role, ServiceType } from '@prisma/client'
 import { InputType, ReturnType } from '../types'
 import { ServiceSchema } from '../schema'
+import { createErrorLogs, createLogs } from '@/features/logs/actions/createLogs'
 
 async function updateServiceInBackground(data: InputType, userId: string) {
   const {
@@ -109,9 +110,16 @@ const handler = async (data: InputType): Promise<ReturnType> => {
 
   try {
     const service = await updateServiceInBackground(data, session.user.id)
+
+    createLogs({ data: data, actionType: 'updateService' })
     return { data: service }
   } catch (err: any) {
     console.error('Update failed:', err)
+    createErrorLogs({
+      data: data,
+      actionType: 'updateService',
+      errorMessage: err.message,
+    })
     return { error: err.message || 'Gagal mengupdate jasa' }
   }
 }

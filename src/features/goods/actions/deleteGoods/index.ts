@@ -9,6 +9,8 @@ import prisma from '@/lib/prisma'
 import { InputType, ReturnType } from '../types'
 import { GoodSchema } from '../schema'
 import { Role } from '@prisma/client'
+import { create } from 'domain'
+import { createErrorLogs, createLogs } from '@/features/logs/actions/createLogs'
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const session = await auth()
@@ -39,8 +41,14 @@ const handler = async (data: InputType): Promise<ReturnType> => {
 
       return good
     })
+    createLogs({ data: data, actionType: 'deleteGood' })
   } catch (error: any) {
     console.error(error.message)
+    createErrorLogs({
+      data: data,
+      actionType: 'deleteGood',
+      errorMessage: error.message,
+    })
     return {
       error: error.message || 'Gagal menghapus barang',
     }

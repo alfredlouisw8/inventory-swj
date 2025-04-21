@@ -8,6 +8,8 @@ import { InputType, ReturnType } from '../types'
 import { ServiceSchema } from '../schema'
 import { revertInventoryChanges } from '../functions'
 import { PrismaPromise, Role } from '@prisma/client'
+import { create } from 'domain'
+import { createErrorLogs, createLogs } from '@/features/logs/actions/createLogs'
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const session = await auth()
@@ -65,9 +67,17 @@ const handler = async (data: InputType): Promise<ReturnType> => {
 
     // Revalidate the path to update the client UI
     revalidatePath(`/consolidators/${deletedService.consolidatorId}`)
+
+    createLogs({ data: data, actionType: 'deleteService' })
+
     return { data: deletedService }
   } catch (error: any) {
     console.error(error.message)
+    createErrorLogs({
+      data: data,
+      actionType: 'deleteService',
+      errorMessage: error.message,
+    })
     return {
       error: error.message || 'Gagal menghapus jasa',
     }

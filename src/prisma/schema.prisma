@@ -178,3 +178,13 @@ model ServiceGood {
   @@index([goodId], map: "good_idx")
   @@index([serviceId], map: "service_idx")
 }
+
+model Log {
+  id           String  @id @default(auto()) @map("_id") @db.ObjectId
+  type         String
+  actionType   String
+  errorMessage String?
+  data         String
+
+  createdAt DateTime @default(now())
+}
