@@ -304,6 +304,12 @@ export default function ServiceForm({
                             <CommandGroup>
                               {goods.map((good) => (
                                 <CommandItem
+                                  style={{
+                                    display:
+                                      good.currentQuantity > 0
+                                        ? 'flex'
+                                        : 'none',
+                                  }}
                                   value={good.id}
                                   key={good.id}
                                   onSelect={() => {
