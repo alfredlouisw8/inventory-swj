@@ -51,6 +51,20 @@ async function updateServiceInBackground(data: InputType, userId: string) {
     }
   }
 
+  // Calculate deltas for removed goods
+  const removedGoods = Array.from(oldGoodsMap.entries())
+    .filter(([goodId]) => !goods.some((g) => g.goodId === goodId))
+    .map(([goodId, quantity]) => ({
+      goodId,
+      // Reverse the original operation
+      delta: serviceType === ServiceType.IN ? -quantity : quantity,
+    }))
+
+  // Add deltas for removed goods
+  for (const { goodId, delta } of removedGoods) {
+    deltas[goodId] = (deltas[goodId] || 0) + delta
+  }
+
   let updatedService
 
   const transactions: PrismaPromise<any>[] = []
@@ -68,6 +82,12 @@ async function updateServiceInBackground(data: InputType, userId: string) {
       containerSize,
       consolidatorId,
       serviceGoods: {
+        deleteMany: {
+          serviceId,
+          goodId: {
+            notIn: goods.map((g) => g.goodId),
+          },
+        },
         upsert: goods.map(({ goodId, quantity }) => ({
           where: { serviceId_goodId: { serviceId, goodId } },
           update: { quantity },
