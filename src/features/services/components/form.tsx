@@ -90,7 +90,12 @@ export default function ServiceForm({
             pageIndex: 0,
             pageSize: 100,
             filters: [],
-            sorting: [],
+            sorting: [
+              {
+                id: 'currentQuantity',
+                desc: true,
+              },
+            ],
           },
           { consolidatorId }
         )
