@@ -1,9 +1,19 @@
-import { Service, ServiceGood } from '@prisma/client'
+import { Good, Service, ServiceGood } from '@prisma/client'
 import { operatorOptions } from './const'
 
 // Extend the Service type to include serviceGoods
 export type ServiceWithGoods = Service & {
   serviceGoods: ServiceGood[]
+}
+
+export type ServiceWithGoodsHistory = Service & {
+  serviceGoods: (ServiceGood & {
+    good: Good
+  })[]
+}
+
+export type ServiceWithGoodData = ServiceGood & {
+  good: Good
 }
 
 export type ExportInvoiceData = {

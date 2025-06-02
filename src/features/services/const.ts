@@ -42,6 +42,44 @@ export const servicesOutFilterFields: FilterFieldType[] = [
   },
 ]
 
+export const servicesOutHistoryFilterFields: FilterFieldType[] = [
+  {
+    label: 'Tanggal Pengerjaan',
+    value: 'date',
+    type: 'date',
+  },
+  {
+    label: 'Nomor truck',
+    value: 'truckNumber',
+    type: 'default',
+  },
+  {
+    label: 'Nomor container',
+    value: 'containerNumber',
+    type: 'default',
+  },
+  {
+    label: 'Nomor PKBE',
+    value: 'PKBENumber',
+    type: 'default',
+  },
+  {
+    label: 'Tanggal PKBE',
+    value: 'PKBEDate',
+    type: 'date',
+  },
+  {
+    label: 'Nomor PEB',
+    value: 'PEBNumber',
+    type: 'default',
+  },
+  {
+    label: 'Nomor NPE',
+    value: 'NPENumber',
+    type: 'default',
+  },
+]
+
 export const containerSizeOptions = Object.entries(ContainerSize).map(
   ([key, value]) => ({
     value: key,

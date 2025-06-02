@@ -63,40 +63,33 @@ export const getWhereConditions = (filters: FilterType[]) => {
 
     const value = getValue(filter.type, filter.value)
 
-    switch (filter.operator) {
-      case 'contains':
-        whereConditions[filter.field] = {
-          contains: value,
-          mode: 'insensitive',
-        }
-        break
-      case 'equals':
-        whereConditions[filter.field] = value
-        break
-      case 'startsWith':
-        whereConditions[filter.field] = {
-          startsWith: value,
-          mode: 'insensitive',
-        }
-        break
-      case 'endsWith':
-        whereConditions[filter.field] = {
-          endsWith: value,
-          mode: 'insensitive',
-        }
-        break
-      case 'before':
-        whereConditions[filter.field] = { lt: value }
-        break
-      case 'after':
-        whereConditions[filter.field] = { gt: value }
-        break
-      case 'greaterThan':
-        whereConditions[filter.field] = { gt: value }
-        break
-      case 'lessThan':
-        whereConditions[filter.field] = { lt: value }
-        break
+    const condition =
+      filter.operator === 'contains'
+        ? { contains: value, mode: 'insensitive' }
+        : filter.operator === 'equals'
+        ? value
+        : filter.operator === 'startsWith'
+        ? { startsWith: value, mode: 'insensitive' }
+        : filter.operator === 'endsWith'
+        ? { endsWith: value, mode: 'insensitive' }
+        : filter.operator === 'before' || filter.operator === 'lessThan'
+        ? { lt: value }
+        : filter.operator === 'after' || filter.operator === 'greaterThan'
+        ? { gt: value }
+        : undefined
+
+    // Custom case: nested field from Good
+    if (['PEBNumber', 'NPENumber'].includes(filter.field)) {
+      whereConditions.serviceGoods = {
+        some: {
+          good: {
+            ...whereConditions.serviceGoods?.some?.good,
+            [filter.field]: condition,
+          },
+        },
+      }
+    } else {
+      whereConditions[filter.field] = condition
     }
   })
 

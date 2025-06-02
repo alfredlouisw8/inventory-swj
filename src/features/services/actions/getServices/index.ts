@@ -42,7 +42,13 @@ export default async function getServices<TData>(
       skip: pageIndex * pageSize,
       take: pageSize,
       orderBy,
-      include: { serviceGoods: true },
+      include: {
+        serviceGoods: {
+          include: {
+            good: true,
+          },
+        },
+      },
     })
 
     const count = await prisma.service.count({ where: whereConditions }) // Get total count with the same filters

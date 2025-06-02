@@ -1,19 +1,10 @@
 'use client'
 
-import { ServiceGood, ServiceType } from '@prisma/client'
+import { Good, ServiceGood, ServiceType } from '@prisma/client'
 import { ColumnDef } from '@tanstack/react-table'
 import { ArrowUpDown } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-
-type ServiceWithGoodData = ServiceGood & {
-  good: {
-    name: string
-    shipper: string
-    packageType: string
-    destination: string
-    consignee: string
-  }
-}
+import { ServiceWithGoodData } from '@/utils/types'
 
 export const serviceWithGoodsColumns: ColumnDef<ServiceWithGoodData>[] = [
   {
@@ -85,6 +76,34 @@ export const serviceWithGoodsColumns: ColumnDef<ServiceWithGoodData>[] = [
       </Button>
     ),
     cell: ({ row }) => row.original.good.destination,
+  },
+  {
+    accessorKey: 'good.PEBNumber',
+    id: 'goodPEBNumber',
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+      >
+        Nomor PEB
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
+    cell: ({ row }) => row.original.good.PEBNumber,
+  },
+  {
+    accessorKey: 'good.NPENumber',
+    id: 'goodNPENumber',
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+      >
+        Nomor NPE
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
+    cell: ({ row }) => row.original.good.NPENumber,
   },
   {
     accessorKey: 'quantity', // Direct access to 'goodCount'

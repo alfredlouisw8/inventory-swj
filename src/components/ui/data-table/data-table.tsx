@@ -68,6 +68,8 @@ export function DataTable<TData, TValue>({
           },
           additionalArguments
         )
+
+        console.log('data', data)
         setTableData(data)
         setRowCount(count)
       } catch (error) {
