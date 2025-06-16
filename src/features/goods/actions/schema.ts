@@ -9,6 +9,8 @@ export const GoodSchema = z.object({
   shipper: z.string(),
   consignee: z.string(),
   destination: z.string(),
+  block: z.string().optional(),
+  mailNumber: z.string().optional(),
   packageType: z.string(),
   NPENumber: z.string().optional(),
   NPEDate: z.date().optional(),

@@ -144,6 +144,8 @@ model Good {
   consignee       String
   destination     String
   packageType     String
+  block           String?
+  mailNumber      String?
   PEBNumber       String?
   PEBDate         DateTime?
   NPENumber       String?

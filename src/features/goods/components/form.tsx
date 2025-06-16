@@ -59,6 +59,8 @@ export default function GoodForm({
       currentQuantity: goodData?.currentQuantity || 0,
       consolidatorId,
       remarks: goodData?.remarks || '',
+      block: goodData?.block || '',
+      mailNumber: goodData?.mailNumber || '',
       truckNumber: goodData?.truckNumber || '',
       date: goodData?.date || undefined,
       PEBDate: goodData?.PEBDate || undefined,
@@ -160,6 +162,21 @@ export default function GoodForm({
                 name="currentQuantity"
                 label="Jumlah barang"
                 placeholder="Jumlah barang"
+              />
+            </div>
+
+            <div className="flex items-center gap-5">
+              <FormTextField
+                form={form}
+                name="block"
+                label="Blok"
+                placeholder="Blok"
+              />
+              <FormTextField
+                form={form}
+                name="mailNumber"
+                label="Nomor Surat"
+                placeholder="Nomor Surat"
               />
             </div>
 
